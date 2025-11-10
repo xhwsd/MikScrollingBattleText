@@ -3,6 +3,8 @@
 ## Title: Mik's Scrolling Battle Text
 ## Notes: Scrolls battle information around the character model.
 ## Notes-ruRU: Прокрутка информации боя вокруг модели персонажа.
+## Notes-zhCN: 米克滚动战斗文本(MSBT)
+## Notes: 在角色模型周围滚动战斗信息。
 ## OptionalDeps: SW_FixLogStrings
 ## SavedVariables: MikSBT_Save
 
@@ -14,8 +16,11 @@ MikScrollingBattleText-enUS.lua
 MikScrollingBattleText-frFR.lua
 MikScrollingBattleText-deDE.lua
 MikScrollingBattleText-ruRU.lua
+MikScrollingBattleText-zhCN.lua
 
 localization.lua
+localization-zhCN.lua
+
 MikTableRecyclerObject.lua
 MikCombatEventHelper.lua
 MikScrollingBattleText.lua

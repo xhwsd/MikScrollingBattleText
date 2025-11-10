@@ -1,20 +1,24 @@
+if GetLocale() ~= "zhCN" then
+    return
+end
+
 -------------------------------------------------------------------------------------
--- Title: Mik's Scrolling Battle Text
--- Author: Mik
--- Maintainer: Athene
+-- 标题: 米克滚动战斗文本
+-- 作者: Mik
+-- 维护者: 树先生（xhwsd@qq.com）
 -------------------------------------------------------------------------------------
 
 -- Create "namespace."
 MikSBT = {};
 
 -------------------------------------------------------------------------------
--- Mod Constants
+-- 模块常量
 -------------------------------------------------------------------------------
 
-MikSBT.MOD_NAME		= "MikScrollingBattleText"
+MikSBT.MOD_NAME		= "米克滚动战斗文本(MSBT)"
 MikSBT.VERSION_NUMBER	= 4.43;
 MikSBT.VERSION_STRING	= "v4.43 beta";
-MikSBT.WINDOW_TITLE	= "Mik's Scrolling Battle Text " .. MikSBT.VERSION_STRING .. " - \124cffF58CBA\124hAthene Edit\124h\124r";
+MikSBT.WINDOW_TITLE	= "米克滚动战斗文本(MSBT) " .. MikSBT.VERSION_STRING .. " - \124cffF58CBA\124h由 树先生 编辑\124h\124r";
 
 MikSBT.COMMAND		= "/msbt";
 
@@ -22,38 +26,38 @@ local BS = AceLibrary("Babble-Spell-2.2")
 local L = AceLibrary("AceLocale-2.2"):new(MikSBT.MOD_NAME)
 
 -------------------------------------------------------------------------------
--- English (Default)
+-- 中文（默认）
 -------------------------------------------------------------------------------
 
 ------------------------------
--- Commands
+-- 命令
 ------------------------------
-MikSBT.COMMAND_RESET		= "reset";
-MikSBT.COMMAND_DISABLE		= "disable";
-MikSBT.COMMAND_ENABLE		= "enable";
-MikSBT.COMMAND_DISPLAY		= "display";
-MikSBT.COMMAND_SHOWVER		= "version";
-MikSBT.COMMAND_STATS		= "stats";
-MikSBT.COMMAND_SEARCH		= "search";
-MikSBT.COMMAND_DEBUG		= "debug";
-MikSBT.COMMAND_HELP		= "help";
+MikSBT.COMMAND_RESET		= "重置";
+MikSBT.COMMAND_DISABLE		= "禁用";
+MikSBT.COMMAND_ENABLE		= "启用";
+MikSBT.COMMAND_DISPLAY		= "显示";
+MikSBT.COMMAND_SHOWVER		= "版本";
+MikSBT.COMMAND_STATS		= "统计";
+MikSBT.COMMAND_SEARCH		= "搜索";
+MikSBT.COMMAND_DEBUG		= "调试";
+MikSBT.COMMAND_HELP		= "帮助";
 
 MikSBT.COMMAND_USAGE = {
- "Usage: " .. MikSBT.COMMAND .. " <command> [params]",
- " Commands:",
- "  " .. MikSBT.COMMAND_RESET .. " - Reset the current profile to the default settings.",
- "  " .. MikSBT.COMMAND_DISABLE .. " - Disables the mod.",
- "  " .. MikSBT.COMMAND_ENABLE .. " - Enables the mod.",
- "  " .. MikSBT.COMMAND_SHOWVER .. " - Shows the current version.",
- "  " .. MikSBT.COMMAND_STATS .. " - Reports stats about table recycling.",
- "  " .. MikSBT.COMMAND_SEARCH .. " filter - Sets a filter for searching event types.",
- "  " .. MikSBT.COMMAND_DEBUG .. " - Toggles debug mode.",
- "  " .. MikSBT.COMMAND_HELP .. " - Show the command usage.",
+ "使用: " .. MikSBT.COMMAND .. " <command> [params]",
+ " 命令:",
+ "  " .. MikSBT.COMMAND_RESET .. " - 将当前配置文件重置为默认设置。",
+ "  " .. MikSBT.COMMAND_DISABLE .. " - 禁用模块。",
+ "  " .. MikSBT.COMMAND_ENABLE .. " - 启动模块。",
+ "  " .. MikSBT.COMMAND_SHOWVER .. " - 显示当前版本。",
+ "  " .. MikSBT.COMMAND_STATS .. " - 报告统计表回收。",
+ "  " .. MikSBT.COMMAND_SEARCH .. " 过滤器 - 设置用于搜索事件类型的筛选器。",
+ "  " .. MikSBT.COMMAND_DEBUG .. " - 调试模式。",
+ "  " .. MikSBT.COMMAND_HELP .. " - 显示命令用法。",
 };
 
 
 ------------------------------
--- Output messages
+-- 输出消息
 ------------------------------
 
 MikSBT.MSG_DEBUG_ENABLE				= L["Debug mode has been enabled."];
@@ -79,112 +83,82 @@ MikSBT.MSG_ENVIRONMENTAL_SLIME		= L["Slime"];
 
 
 ------------------------------
--- Font info
+-- 字体信息
 ------------------------------
 
--- Holds the available fonts.
+-- 可用字体
 MikSBT.AVAILABLE_FONTS = {
- [1] = {Name="Adventure", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\adventure.ttf"},
- [2] = {Name="Backsplatter", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\backsplatter.ttf"},
- [3] = {Name="Budhand", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\budhand.ttf"},
- [4] = {Name="Comic", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\comic.ttf"},
- [5] = {Name="Creeper", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\creeper.ttf"},
- [6] = {Name="Friz", Path="Fonts\\FRIZQT__.TTF"},
- [7] = {Name="Porky", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\porky.ttf"},
- [8] = {Name="Signature", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\signature.ttf"},
- [9] = {Name="Black Castle", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\BlackCastleMF.ttf"},
- [10] = {Name="Exocet", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\exocet.ttf"},
- [11] = {Name="FuturaBold", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\FuturaBold.ttf"},
- [12] = {Name="Mail Ray Stuff", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\mailrays.ttf"},
- [13] = {Name="Pepsi", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\pepsi.ttf"},
- [14] = {Name="Bazooka", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\bazooka.ttf"},
- [15] = {Name="Cooline", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\cooline.ttf"},
- [16] = {Name="Yellowjacket", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\yellowjacket.ttf"},
- [17] = {Name="Defused", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\defused.ttf"},
- [18] = {Name="Zombie", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\zombie.ttf"},
- [19] = {Name="Basket Of Hammers", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\basketofhammers.ttf"},
- [20] = {Name="College", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\college.ttf"},
- [21] = {Name="Galaxy", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\galaxy.ttf"},
- [22] = {Name="Skratch Punk", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\skratchpunk.ttf"},
- [23] = {Name="DieDieDie", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\DieDieDie.ttf"},
- [24] = {Name="BigNoodleTitling", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\BigNoodleTitling.ttf"},
- [25] = {Name="Continuum", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\Continuum.ttf"},
- [26] = {Name="Expressway", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\Expressway.ttf"},
- [27] = {Name="Homespun", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\Homespun.ttf"},
- [28] = {Name="Myriad-Pro", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\Myriad-Pro.ttf"},
- [29] = {Name="PT-Sans-Narrow-Bold", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\PT-Sans-Narrow-Bold.ttf"},
- [30] = {Name="PT-Sans-Narrow-Regular", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\PT-Sans-Narrow-Regular.ttf"},
- [31] = {Name="Simhei", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\simhei.ttf"},
- [32] = {Name="Archangelsk", Path="Interface\\Addons\\MikScrollingBattleText\\Fonts\\archangelsk.ttf"},
+ [1] = {Name="Friz", Path="Fonts\\FRIZQT__.TTF"},
 };
 
--- Holds the available font outlines.
+
+-- 保存可用的字体轮廓。
 MikSBT.AVAILABLE_OUTLINES = {
- [1] = {Name="None", Style=""},
- [2] = {Name="Thin", Style="OUTLINE"},
- [3] = {Name="Thick", Style="THICKOUTLINE"},
+ [1] = {Name="无", Style=""},
+ [2] = {Name="薄", Style="OUTLINE"},
+ [3] = {Name="厚", Style="THICKOUTLINE"},
 };
 
--- Holds the available text aligns.
+-- 保存可用的文本对齐方式。
 MikSBT.AVAILABLE_TEXT_ALIGNS = {
- [1] = {Name="Left", AnchorPoint="BOTTOMLEFT"},
- [2] = {Name="Center", AnchorPoint="BOTTOM"},
- [3] = {Name="Right", AnchorPoint="BOTTOMRIGHT"},
+ [1] = {Name="左", AnchorPoint="BOTTOMLEFT"},
+ [2] = {Name="中", AnchorPoint="BOTTOM"},
+ [3] = {Name="右", AnchorPoint="BOTTOMRIGHT"},
 };
 
 
 ------------------------------
--- Animation info
+-- 动画信息
 ------------------------------
 
 MikSBT.AVAILABLE_SCROLL_DIRECTIONS = {
- [1] = {Name="Up"},
- [2] = {Name="Down"},
+ [1] = {Name="上"},
+ [2] = {Name="下"},
 }
 
--- Holds the available animation styles.
+-- 保存可用的动画样式。
 MikSBT.AVAILABLE_ANIMATION_STYLES = {
- [1] = {Name="Straight", AllowedScrollDirections={1,2}},
- [2] = {Name="Left Parabola", AllowedScrollDirections={1,2}},
- [3] = {Name="Right Parabola", AllowedScrollDirections={1,2}},
+ [1] = {Name="垂直", AllowedScrollDirections={1,2}},
+ [2] = {Name="左抛物线", AllowedScrollDirections={1,2}},
+ [3] = {Name="右抛物线", AllowedScrollDirections={1,2}},
 };
 
 
 ------------------------------
--- Trigger info
+-- 触发信息
 ------------------------------
 
--- Holds the available trigger types.
+-- 保存可用的触发器类型。
 MikSBT.AVAILABLE_TRIGGER_TYPES = {
- [1] = {Name="Self Health"},
- [2] = {Name="Self Mana"},
- [3] = {Name="Pet Health"},
- [4] = {Name="Enemy Target Health"},
- [5] = {Name="Friendly Target Health"},
- [6] = {Name="Search Pattern"},
+ [1] = {Name="自己血量"},
+ [2] = {Name="自己蓝量"},
+ [3] = {Name="宠物血量"},
+ [4] = {Name="敌对目标血量"},
+ [5] = {Name="友方目标血量"},
+ [6] = {Name="搜索模式"},
 };
 
 
 ------------------------------
--- Stances info
+-- 姿态信息
 ------------------------------
 
--- Holds the available stances.
+-- 保存可用的姿态。
 MikSBT.AVAILABLE_STANCES = {
- [1] = {Name="|cffC79C6EBattle Stance|r/|cffFF7D0ABear Form|r/|cffFFF569Stealth|r/|cffF58CBADevotion Aura"},
- [2] = {Name="|cffC79C6EDefensive Stance|r/|cffFF7D0AAquatic Form|r/|cffF58CBARetribution Aura"},
- [3] = {Name="|cffC79C6EBeserker Stance|r/|cffFF7D0ACat Form|r/|cffF58CBAConcentration Aura"},
- [4] = {Name="|cffFF7D0ATravel Form|r/|cffF58CBAShadow Resistance Aura"},
- [5] = {Name="|cffFF7D0AMoonkin Form|r/|cffF58CBAFrost Resistance Aura"},
- [6] = {Name="|cffF58CBAFire Resistance Aura"},
- [7] = {Name="Any"},
+ [1] = {Name="|cffC79C6E战斗姿态|r/|cffFF7D0ABear Form|r/|cffFFF569Stealth|r/|cffF58CBA虔诚光环"},
+ [2] = {Name="|cffC79C6E防御姿态|r/|cffFF7D0AAquatic Form|r/|cffF58CBA惩罚光环"},
+ [3] = {Name="|cffC79C6E狂暴姿态|r/|cffFF7D0ACat Form|r/|cffF58CBA专注光环"},
+ [4] = {Name="|cffFF7D0A旅行形态|r/|cffF58CBA暗影抗性光环"},
+ [5] = {Name="|cffFF7D0A枭兽形态|r/|cffF58CBA冰霜抗性光环"},
+ [6] = {Name="|cffF58CBA火焰抗性光环"},
+ [7] = {Name="任何"},
 };
 
 
 ------------------------------
--- Defaults
+-- 默认配置
 ------------------------------
-MikSBT.DEFAULT_PROFILE_NAME = "Default";
+MikSBT.DEFAULT_PROFILE_NAME = "默认";
 
 -- %a = amount of the attack, heal, gain, loss, etc.
 -- %n = name of enemy/player
