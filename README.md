@@ -5,13 +5,18 @@
 - 尽可能不破坏已有功能，最大化确保功能完整
 
 
-## 更新记录
+## `MikScrollingBattleText` 更新记录
 
-### `MikScrollingBattleText`2025-11-10
+### 2025-11-10
 - 移除`localization`非英文定义
 - 添加`localization-zhCN`中文定义
 - 完善`MikScrollingBattleText.toc`中文定义
 
-## `MikScrollingBattleTextOptions`2025-11-10
+## `MikScrollingBattleTextOptions` 更新记录
+
+### 2025-11-10
 - 添加`localization_options-zhCN`中文语言定义
 - 完善`MikScrollingBattleTextOptions.toc`中文定义
+
+
+> 由[树先生](https://github.com/xhwsd)维护更新
